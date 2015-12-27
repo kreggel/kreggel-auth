@@ -6,7 +6,6 @@
 		<groupId>de.kreggel.auth</groupId>
 		<artifactId>auth-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<artifactId>auth-service</artifactId>
