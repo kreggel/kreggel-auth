@@ -11,4 +11,155 @@
 	<artifactId>auth-core</artifactId>
 	<packaging>jar</packaging>
 
+	<properties>
+		<spring-data-jpa.version>1.9.0.RELEASE</spring-data-jpa.version>
+		<hikari.version>2.4.2</hikari.version>
+		<postgresql.version>9.4-1204-jdbc41</postgresql.version>
+		<liquibase.version>3.4.1</liquibase.version>
+		<hibernate.version>5.0.3.Final</hibernate.version>
+
+		<!-- test -->
+		<derby.version>10.12.1.1</derby.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-liquibase</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+		<!-- persistence -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring-data-jpa.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>${hikari.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- update management -->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>${liquibase.version}</version>
+		</dependency>
+
+		<!-- database support for local tests -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>${derby.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+
+		<!-- replace tokens in resources -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/build.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemProperties>
+						<!-- derby log file -->
+						<property>
+							<name>derby.stream.error.file</name>
+							<value>${basedir}/target/derby.log</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
+			<!-- get git revision information as properties -->
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>2.2.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<dateFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateFormat>
+					<dateFormatTimeZone>UTC</dateFormatTimeZone>
+				</configuration>
+			</plugin>
+
+			<!-- liquibase updater -->
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>${liquibase.version}</version>
+				<configuration>
+					<changeLogFile>db/changelog.xml</changeLogFile>
+					<driver>${db.driver.class}</driver>
+					<url>${db.jdbc.url}</url>
+					<username>${db.user}</username>
+					<password>${db.password}</password>
+					<outputChangeLogFile>src/main/resources/db/changelog_base.xml</outputChangeLogFile>
+					<changeSetContext>new</changeSetContext>
+					<contexts>${db.contexts}</contexts>
+					<!-- for easy schema diff -->
+					<referenceUrl>${db.reference.url}</referenceUrl>
+					<referenceUsername>${db.user}</referenceUsername>
+					<referencePassword>${db.password}</referencePassword>
+					<diffChangeLogFile>diff.xml</diffChangeLogFile>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>localdb</id>
+			<properties>
+				<!-- liquibase properties -->
+				<db.driver.class>org.postgresql.Driver</db.driver.class>
+				<db.jdbc.url>jdbc:postgresql://localhost:5432/kreggel</db.jdbc.url>
+				<db.user>kreggel</db.user>
+				<db.password>secret</db.password>
+				<db.contexts>existing</db.contexts>
+			</properties>
+		</profile>
+	</profiles>
 </project>
