@@ -1,5 +1,6 @@
 package de.kreggel.auth.service.bootstrap;
 
+import de.kreggel.auth.service.bootstrap.internal.AbstractResource;
 import de.kreggel.auth.service.status.StatusResource;
 
 import javax.ws.rs.Consumes;
@@ -18,7 +19,6 @@ import java.util.Set;
 public class MainResource extends AbstractResource {
 
     public static final String STATUS_RESOURCE = "/status";
-    public static final String SETUP_RESOURCE = "/setup";
 
     public static final Set<String> KNOWN_RESOURCES;
 
@@ -42,7 +42,7 @@ public class MainResource extends AbstractResource {
     @Consumes(MediaType.WILDCARD)
     @Produces(MediaType.TEXT_PLAIN)
     public String welcome() {
-        return "Welcome to the provisioning service. Please use one of these endpoints: "
+        return "Welcome to our service. Please use one of these endpoints: "
                 + KNOWN_RESOURCES.toString();
     }
 

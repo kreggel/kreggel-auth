@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enunciate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://enunciate.webcohesion.com/schemas/enunciate-2.1.0.xsd"
+           slug="epss-api">
+
+    <title>kreggel auth service</title>
+
+    <description><![CDATA[<center><h2>This is the REST documentation for the <b>kreggel auth service</b></h2></center>]]></description>
+
+    <copyright>kreggel.de</copyright>
+
+    <!-- will be replaced at runtime with actual url by IDLFilter via web.xml -->
+    <application root="localhost:8080/auth" />
+
+    <!-- explicitly give enunciate the API classes since they contain the javadoc -->
+    <api-classes>
+        <include pattern="de.kreggel.auth.service.*" />
+    </api-classes>
+
+    <namespaces>
+        <namespace id="auth" uri="http://kreggel.de/services/auth" />
+    </namespaces>
+
+    <modules>
+        <jaxws disabled="true" />
+        <swagger basePath="/auth/api/1" />
+        <!-- "local" avoids that endpoints are occurring twice in the documentation -->
+        <jaxrs groupBy="path" datatype-detection="local">
+            <application path="/auth/api/1" />
+        </jaxrs>
+    </modules>
+
+</enunciate>

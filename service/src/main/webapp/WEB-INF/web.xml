@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         id="kreggel-auth" version="3.0"
+         metadata-complete="true"
+        >
+    <display-name>Kreggel Auth Service</display-name>
+
+    <!-- initialize spring app context -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- tell spring, where to look for applicationContext.xml -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+
+    <!-- Add unique id to each request for logging -->
+    <filter>
+        <filter-name>RequestIdLoggingFilter</filter-name>
+        <filter-class>de.kreggel.auth.service.bootstrap.internal.RequestIdLoggingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>RequestIdLoggingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- rewrite documentation urls to the actual location -->
+    <filter>
+        <filter-name>wadl-filter</filter-name>
+        <filter-class>com.webcohesion.enunciate.rt.IDLFilter</filter-class>
+        <init-param>
+            <param-name>match-prefix</param-name>
+            <param-value>:resources base="</param-value>
+        </init-param>
+        <init-param>
+            <param-name>assumed-base-address</param-name>
+            <param-value>http://localhost:8080/auth</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>wadl-filter</filter-name>
+        <url-pattern>/application.wadl</url-pattern>
+    </filter-mapping>
+</web-app>

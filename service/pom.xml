@@ -11,4 +11,142 @@
 	<artifactId>auth-service</artifactId>
 	<packaging>war</packaging>
 
+	<properties>
+		<jersey.version>2.22.1</jersey.version>
+		<enunciate.version>2.1.1</enunciate.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.kreggel.auth</groupId>
+			<artifactId>auth-core</artifactId>
+			<version>${parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-spring3</artifactId>
+			<version>${jersey.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-web</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- documentation - rewriting documentation URLs -->
+		<dependency>
+			<groupId>com.webcohesion.enunciate</groupId>
+			<artifactId>enunciate-rt-util</artifactId>
+			<version>${enunciate.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.webcohesion.enunciate</groupId>
+			<artifactId>enunciate-core-annotations</artifactId>
+			<version>${enunciate.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.webcohesion.enunciate</groupId>
+				<artifactId>enunciate-slim-maven-plugin</artifactId>
+				<version>${enunciate.version}</version>
+				<configuration>
+					<configFile>src/main/resources/enunciate.xml</configFile>
+					<docsDir>${project.build.directory}/docs</docsDir>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>docs</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<!-- JAX-RS documentation generation -->
+					<dependency>
+						<groupId>com.webcohesion.enunciate</groupId>
+						<artifactId>enunciate-jaxrs</artifactId>
+						<version>${enunciate.version}</version>
+					</dependency>
+					<!-- wadl generation -->
+					<dependency>
+						<groupId>com.webcohesion.enunciate</groupId>
+						<artifactId>enunciate-idl</artifactId>
+						<version>${enunciate.version}</version>
+					</dependency>
+					<!-- json model documentation examples generation -->
+					<dependency>
+						<groupId>com.webcohesion.enunciate</groupId>
+						<artifactId>enunciate-jackson</artifactId>
+						<version>${enunciate.version}</version>
+					</dependency>
+
+					<!-- document as enunciate default docs -->
+					<dependency>
+						<groupId>com.webcohesion.enunciate</groupId>
+						<artifactId>enunciate-docs</artifactId>
+						<version>${enunciate.version}</version>
+					</dependency>
+					<!-- document as swagger as well -->
+					<dependency>
+						<groupId>com.webcohesion.enunciate</groupId>
+						<artifactId>enunciate-swagger</artifactId>
+						<version>${enunciate.version}</version>
+					</dependency>
+					<!-- maybe add automatic client generation for java, ruby, php, C#, C/++, objective-c as well -->
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>target/docs/apidocs</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

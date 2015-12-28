@@ -1,4 +1,4 @@
-package de.kreggel.auth.service.api;
+package de.kreggel.auth.core.api;
 
 import com.google.common.base.Strings;
 
