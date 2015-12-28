@@ -2,6 +2,8 @@
 
 [![Stories in Ready](https://badge.waffle.io/kreggel/kreggel-auth.png?label=ready&title=Ready)](http://waffle.io/kreggel/kreggel-auth)
 
+[![Build Status](https://travis-ci.org/kreggel/kreggel-auth.svg?branch=dev)](https://travis-ci.org/kreggel/kreggel-auth)
+
 a simple service to register, manage and validate users
 
 ## stack:
