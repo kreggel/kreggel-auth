@@ -2,7 +2,9 @@ package de.kreggel.auth.service.bootstrap;
 
 import de.kreggel.auth.service.bootstrap.internal.AbstractResource;
 import de.kreggel.auth.service.status.StatusResource;
+import org.springframework.stereotype.Component;
 
+import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -16,6 +18,8 @@ import java.util.Set;
  * The versioned main entry point for this REST interface.
  * This entry point sits behind the api/ URL.
  */
+@Named
+@Path("/")
 public class MainResource extends AbstractResource {
 
     public static final String STATUS_RESOURCE = "/status";

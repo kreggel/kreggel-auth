@@ -1,46 +1,42 @@
 package de.kreggel.auth.service.bootstrap.internal;
 
-import javax.ws.rs.ClientErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-
-import org.glassfish.jersey.server.ParamException;
-import org.glassfish.jersey.spi.ExtendedExceptionMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This is the catch all exception mapper that is invoked, when no other mapper exists. Normally this signals an
  * internal server error.
  */
 @Provider
-public class CatchAllExceptionMapper implements ExtendedExceptionMapper<Exception> {
+public class CatchAllExceptionMapper implements ExceptionMapper<Exception> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CatchAllExceptionMapper.class);
 
     @Override
     public Response toResponse(Exception exception) {
+        LOG.error("an unhandled exception occured", exception);
 
+        Status status = Status.INTERNAL_SERVER_ERROR;
         String cause = "an unhandled exception occured";
+        int httpCode = status.getStatusCode();
+        String phrase = status.getReasonPhrase();
 
-        // if it's client related, add the cause of the error to the message
-        if (exception instanceof ClientErrorException || exception instanceof ParamException) {
-            cause += ": " + exception.getMessage();
-            LOG.debug(cause, exception);
-        } else {
-            LOG.error(cause, exception);
+        if (exception instanceof WebApplicationException) {
+            final Response response = ((WebApplicationException) exception).getResponse();
+            httpCode = response.getStatusInfo().getStatusCode();
+            phrase = response.getStatusInfo().getReasonPhrase();
         }
 
         // TODO: introduce error code resolver
-        ErrorResponse errorResponse = new ErrorResponse(cause, 1, WebInvocationContext.getInstance().getRequestId());
+        ErrorResponse errorResponse = new ErrorResponse(cause, 1, phrase, httpCode, WebInvocationContext.getInstance().getRequestId());
 
-        return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorResponse).type(MediaType.APPLICATION_JSON).build();
-    }
-
-    @Override
-    public boolean isMappable(Exception exception) {
-        return exception instanceof ClientErrorException;
+        return Response.status(httpCode).entity(errorResponse).type(MediaType.APPLICATION_JSON).build();
     }
 }

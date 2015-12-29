@@ -10,27 +10,24 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <context:component-scan base-package="de.kreggel" scope-resolver="org.springframework.context.annotation.Jsr330ScopeMetadataResolver" />
+    <context:component-scan base-package="de.kreggel"/>
     <context:property-placeholder location="classpath:config.properties" />
     <context:mbean-export registration="ignoreExisting" />
 
-    <!-- update manager -->
-
-    <bean name="updateManager" class="com.perceptivesoftware.epss.update.UpdateManager" init-method="performUpdate" />
-
     <!-- persistence -->
 
-    <jpa:repositories base-package="de.kreggel.auth.core.persistence" factory-class="com.perceptivesoftware.epss.persistence.CustomPagingAndSortingRepositoryFactoryBean"/>
+    <!--
+    <bean name="updateManager" class="de.kreggel.auth.core.persistence.updates.LiquibaseUpdateManager" init-method="performUpdate" />
+
+    <jpa:repositories base-package="de.kreggel.auth.core.persistence" factory-class="de.kreggel.auth.core.persistence.CustomPagingAndSortingRepositoryFactoryBean"/>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="updateManager">
         <property name="dataSource" ref="dataSource" />
-        <!-- configure spring exception translation for JPA _and_ Hibernate specific exceptions -->
         <property name="jpaDialect">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
         </property>
     </bean>
 
-    <!-- Hikari connection pool -->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg ref="hikariConfig" />
     </bean>
@@ -49,10 +46,10 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
     <bean id="persistenceExceptionTranslationPostProcessor" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
-    <!-- TX -->
     <tx:annotation-driven />
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
+    -->
 </beans>

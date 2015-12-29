@@ -15,7 +15,7 @@
     <!-- tell spring, where to look for applicationContext.xml -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
+        <param-value>classpath:applicationContext.xml</param-value>
     </context-param>
 
     <!-- Add unique id to each request for logging -->

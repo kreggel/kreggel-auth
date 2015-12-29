@@ -2,9 +2,6 @@ package de.kreggel.auth.service.bootstrap.internal;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import static de.kreggel.auth.service.bootstrap.internal.ErrorResponse.JSON_NAME;
 
 @JsonRootName(JSON_NAME)
@@ -13,26 +10,22 @@ public class ErrorResponse {
     protected static final String JSON_NAME = "error";
 
     private final String requestId;
-    private final String message;
     private final int code;
-    private final URL details;
+    private final String message;
+    private final HttpStatus httpStatus;
 
-    public ErrorResponse(String message, int code, String requestId) {
+    public ErrorResponse(String message, int code, String httpPhrase, int httpCode, String requestId) {
         this.message = message;
         this.code = code;
         this.requestId = requestId;
-        try {
-            this.details = new URL("https://unknown/errorcode/" + code);
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException(e);
-        }
+        this.httpStatus = new HttpStatus(httpCode, httpPhrase);
     }
 
     public ErrorResponse() {
         message = "unknown error occured";
         code = -1;
         requestId = null;
-        details = null;
+        httpStatus = HttpStatus.UNKNOWN;
     }
 
     /**
@@ -62,13 +55,8 @@ public class ErrorResponse {
         return requestId;
     }
 
-    /**
-     * Gets the URL to a page describing the error in detail with possible causes and solutions.
-     *
-     * @return the URL to the error details.
-     */
-    public URL getDetails() {
-        return details;
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 
     @Override
@@ -77,7 +65,40 @@ public class ErrorResponse {
                 "requestId='" + requestId + '\'' +
                 ", message='" + message + '\'' +
                 ", code=" + code +
-                ", details=" + details +
+                ", httpStatus='" + httpStatus + '\'' +
                 '}';
+    }
+
+    public static class HttpStatus {
+        public static final HttpStatus UNKNOWN = new HttpStatus();
+
+        private final int code;
+        private final String phrase;
+
+        public HttpStatus(){
+            code = 500;
+            phrase = "Internal Server Error";
+        }
+
+        public HttpStatus(int code, String phrase) {
+            this.code = code;
+            this.phrase = phrase;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getPhrase() {
+            return phrase;
+        }
+
+        @Override
+        public String toString() {
+            return "HttpStatus{" +
+                    "code=" + code +
+                    ", phrase='" + phrase + '\'' +
+                    '}';
+        }
     }
 }

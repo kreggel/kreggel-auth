@@ -1,23 +1,21 @@
 package de.kreggel.auth.service.bootstrap;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import de.kreggel.auth.service.bootstrap.internal.CatchAllExceptionMapper;
+import de.kreggel.auth.service.bootstrap.internal.JacksonObjectMapperProvider;
+import de.kreggel.auth.service.bootstrap.internal.WebInvocationContext;
+import org.glassfish.jersey.server.ServerProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
-
-import de.kreggel.auth.service.bootstrap.internal.CatchAllExceptionMapper;
-import de.kreggel.auth.service.bootstrap.internal.JacksonObjectMapperProvider;
-import de.kreggel.auth.service.bootstrap.internal.WebInvocationContext;
-import org.glassfish.jersey.server.ServerProperties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 @ApplicationPath(ServiceApplication.SERVICE_PATH)
@@ -47,6 +45,7 @@ public class ServiceApplication extends Application {
         Set<Class<?>> classes = new HashSet<Class<?>>(super.getClasses());
 
         classes.add(CatchAllExceptionMapper.class);
+        classes.add(ErrorCodeBasedExceptionMapper.class);
 
         return classes;
     }
