@@ -16,6 +16,4 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <context:component-scan base-package="de.kreggel"/>
     <context:property-placeholder location="classpath:config.properties" />
     <context:mbean-export registration="ignoreExisting" />
-
-    <bean class="de.kreggel.auth.service.bootstrap.MainResource"/>
 </beans>
