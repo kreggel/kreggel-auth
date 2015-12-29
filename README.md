@@ -17,4 +17,4 @@ a simple service to register, manage and validate users
 - mvn package
 
 ## run:
-- TODO
+- mvn tomcat7:run-war
