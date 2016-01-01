@@ -7,7 +7,8 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table
+@Table(name = "users")
+@NamedQuery(name="User.findByName", query = "select u from User u where u.username = :username")
 public class User {
 
     @Id
