@@ -8,10 +8,16 @@
     <persistence-unit name="auth" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://192.168.0.21:5432/kreggel" />
+            <property name="javax.persistence.jdbc.user" value="fns" />
+            <property name="javax.persistence.jdbc.password" value="together" />
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect" />
-            <property name="hibernate.hbm2ddl.auto" value="validate" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+
             <!-- only flush dirty objects before commit - not inbetween. In the rare case that it is really needed, simply flush manually before performing e.g. a query -->
             <property name="org.hibernate.flushMode" value="commit"/>
         </properties>
