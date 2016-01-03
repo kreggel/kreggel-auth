@@ -65,5 +65,6 @@ public class ServiceApplication extends Application {
         WebInvocationContext.getInstance().setResourceContext(resourceContext);
         LOGGER.info("Service Application has been initialized properly.");
         LOGGER.info("Application is available under ApplicationPath: " + SERVICE_PATH);
+        System.out.println("Service Application has been initialized properly.");
     }
 }

@@ -10,7 +10,7 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <context:component-scan base-package="de.kreggel"/>
+    <context:component-scan base-package="de.kreggel.*"  scope-resolver="org.springframework.context.annotation.Jsr330ScopeMetadataResolver"/>
     <context:property-placeholder location="classpath:config.properties" />
     <context:mbean-export registration="ignoreExisting" />
 

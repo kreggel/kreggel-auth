@@ -22,7 +22,7 @@ import java.util.Set;
 @Path("/")
 public class MainResource extends AbstractResource {
 
-    public static final String STATUS_RESOURCE = "/status";
+    public static final String STATUS_RESOURCE = "status";
 
     public static final Set<String> KNOWN_RESOURCES;
 
@@ -55,9 +55,17 @@ public class MainResource extends AbstractResource {
      *
      * @return the status resource.
      */
-    @Path(STATUS_RESOURCE)
-    public StatusResource getStatus() {
-        return rc.getResource(StatusResource.class);
-    }
+    //@Path(STATUS_RESOURCE)
+    //public StatusResource getStatus() {
+    //    return rc.getResource(StatusResource.class);
+    //}
 
+    @Path(STATUS_RESOURCE)
+    public String getStatus() {
+        // Implement light-weight checks
+        // Check if login is possible
+        // Check if DB is available
+        // Check load? (active connections, bandwidth, ...)
+        return "{'type':'status','status':'ok'}";
+    }
 }
