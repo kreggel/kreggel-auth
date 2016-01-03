@@ -2,6 +2,7 @@ package de.kreggel.auth.service.bootstrap;
 
 import de.kreggel.auth.service.bootstrap.internal.AbstractResource;
 import de.kreggel.auth.service.status.StatusResource;
+import de.kreggel.auth.service.status.VersionResource;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Named;
@@ -24,6 +25,7 @@ import java.util.Set;
 public class MainResource extends AbstractResource {
 
     public static final String STATUS_RESOURCE = "status";
+    public static final String VERSION_RESOURCE = "version";
 
     public static final Set<String> KNOWN_RESOURCES;
 
@@ -66,5 +68,10 @@ public class MainResource extends AbstractResource {
         // Check if DB is available
         // Check load? (active connections, bandwidth, ...)
         return rc.getResource(StatusResource.class);
+    }
+
+    @Path(VERSION_RESOURCE)
+    public VersionResource getVersion() {
+        return rc.getResource(VersionResource.class);
     }
 }

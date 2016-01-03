@@ -14,6 +14,7 @@ public class Version {
     private static final String BUILD_VERSION = PREFIX + "build.version";
     private static final String BUILD_TIMESTAMP = PREFIX + "build.time";
     private static final String BUILD_NUMBER = PREFIX + "commit.id.abbrev";
+    private static final String BUILD_BRANCH = PREFIX + "branch";
 
     private static Properties properties = new Properties();
 
@@ -56,6 +57,10 @@ public class Version {
      */
     public static String getScmRevision() {
         return getRequiredProperty(BUILD_NUMBER);
+    }
+
+    public static String getBranch() {
+        return getRequiredProperty(BUILD_BRANCH);
     }
 
     /*

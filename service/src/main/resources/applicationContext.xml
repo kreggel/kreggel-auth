@@ -13,5 +13,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
     <!-- load other contexts (basically: core) -->
     <!--import resource="classpath:applicationContext.xml" /-->
+    <context:annotation-config/>
     <context:component-scan base-package="de.kreggel.*" scope-resolver="org.springframework.context.annotation.Jsr330ScopeMetadataResolver"/>
 </beans>
