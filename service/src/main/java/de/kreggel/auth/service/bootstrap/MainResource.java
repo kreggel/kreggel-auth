@@ -5,6 +5,7 @@ import de.kreggel.auth.service.status.StatusResource;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -18,8 +19,8 @@ import java.util.Set;
  * The versioned main entry point for this REST interface.
  * This entry point sits behind the api/ URL.
  */
-@Named
 @Path("/")
+@Singleton
 public class MainResource extends AbstractResource {
 
     public static final String STATUS_RESOURCE = "status";
@@ -35,6 +36,10 @@ public class MainResource extends AbstractResource {
                 KNOWN_RESOURCES.add(pathAnnotation.value());
             }
         }
+    }
+
+    public MainResource() {
+        System.out.println("Main Resource created!");
     }
 
     /**
@@ -55,17 +60,11 @@ public class MainResource extends AbstractResource {
      *
      * @return the status resource.
      */
-    //@Path(STATUS_RESOURCE)
-    //public StatusResource getStatus() {
-    //    return rc.getResource(StatusResource.class);
-    //}
-
     @Path(STATUS_RESOURCE)
-    public String getStatus() {
-        // Implement light-weight checks
+    public StatusResource getStatus() {
         // Check if login is possible
         // Check if DB is available
         // Check load? (active connections, bandwidth, ...)
-        return "{'type':'status','status':'ok'}";
+        return rc.getResource(StatusResource.class);
     }
 }

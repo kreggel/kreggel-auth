@@ -13,7 +13,5 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
     <!-- load other contexts (basically: core) -->
     <!--import resource="classpath:applicationContext.xml" /-->
-    <context:component-scan base-package="de.kreggel.*"  scope-resolver="org.springframework.context.annotation.Jsr330ScopeMetadataResolver"/>
-    <context:property-placeholder location="classpath:config.properties" />
-    <context:mbean-export registration="ignoreExisting" />
+    <context:component-scan base-package="de.kreggel.*" scope-resolver="org.springframework.context.annotation.Jsr330ScopeMetadataResolver"/>
 </beans>

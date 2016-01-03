@@ -9,7 +9,7 @@
     <copyright>kreggel.de</copyright>
 
     <!-- will be replaced at runtime with actual url by IDLFilter via web.xml -->
-    <application root="localhost:8080/auth" />
+    <application root="localhost:8080/auth-service" />
 
     <!-- explicitly give enunciate the API classes since they contain the javadoc -->
     <api-classes>
@@ -22,10 +22,10 @@
 
     <modules>
         <jaxws disabled="true" />
-        <swagger basePath="/auth/api/1" />
+        <swagger basePath="/api/1" />
         <!-- "local" avoids that endpoints are occurring twice in the documentation -->
         <jaxrs groupBy="path" datatype-detection="local">
-            <application path="/auth/api/1" />
+            <application path="/api/1" />
         </jaxrs>
     </modules>
 

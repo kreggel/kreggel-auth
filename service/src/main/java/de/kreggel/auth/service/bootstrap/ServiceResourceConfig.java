@@ -3,6 +3,7 @@ package de.kreggel.auth.service.bootstrap;
 import de.kreggel.auth.service.bootstrap.internal.CatchAllExceptionMapper;
 import de.kreggel.auth.service.bootstrap.internal.JacksonObjectMapperProvider;
 import de.kreggel.auth.service.bootstrap.internal.WebInvocationContext;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,45 +19,25 @@ import java.util.Map;
 import java.util.Set;
 
 
-//@ApplicationPath(ServiceApplication.SERVICE_PATH)
-public class ServiceApplication extends Application {
+@ApplicationPath(ServiceResourceConfig.SERVICE_PATH)
+public class ServiceResourceConfig extends ResourceConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceApplication.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceResourceConfig.class);
 
     public static final String SERVICE_PATH = "/api/1";
 
     @Context
     private ResourceContext resourceContext;
 
-    @Override
-    public Map<String, Object> getProperties() {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.putAll(super.getProperties());
+    public ServiceResourceConfig() {
+        super(MainResource.class, CatchAllExceptionMapper.class, ErrorCodeBasedExceptionMapper.class);
+        packages("de.kreggel");
 
+        Map<String, Object> map = new HashMap<>();
         // avoid IllegalStateExceptions when Spring Security Filter tries to handle AccessDeniedExceptions.
         // Jersey per default commits the response and so kills all subsequent filters
         map.put(ServerProperties.RESPONSE_SET_STATUS_OVER_SEND_ERROR, Boolean.TRUE);
-
-        return map;
-    }
-
-    @Override
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> classes = new HashSet<Class<?>>(super.getClasses());
-
-        classes.add(CatchAllExceptionMapper.class);
-        classes.add(ErrorCodeBasedExceptionMapper.class);
-
-        return classes;
-    }
-
-    @Override
-    public Set<Object> getSingletons() {
-
-        Set<Object> singletons = new HashSet<Object>();
-        singletons.add(new JacksonObjectMapperProvider());
-
-        return singletons;
+        addProperties(map);
     }
 
     @PostConstruct

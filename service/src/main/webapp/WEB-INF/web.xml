@@ -38,7 +38,7 @@
         </init-param>
         <init-param>
             <param-name>assumed-base-address</param-name>
-            <param-value>http://localhost:8080/auth</param-value>
+            <param-value>http://localhost:8080/auth-service</param-value>
         </init-param>
     </filter>
     <filter-mapping>
