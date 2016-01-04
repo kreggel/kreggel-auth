@@ -1,35 +1,38 @@
 package de.kreggel.auth.core.api;
 
+import de.kreggel.auth.core.api.UserService;
 import de.kreggel.auth.core.persistence.jpa.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import java.util.Date;
 
 public class Registration {
 
-    public void createUser(String username, String password, String email ) {
+    public void createUser(String username, String password, String email) {
 
-        EntityManager entityManager = Persistence.createEntityManagerFactory("kreggel-auth").createEntityManager();
+        try {
+            EntityManager entityManager = Persistence.createEntityManagerFactory("kreggel-auth").createEntityManager();
 
-        entityManager.getTransaction().begin();
+            entityManager.getTransaction().begin();
 
-        User user = new User();
+            UserService userService = new UserService();
 
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEmail(email);
+            User user = userService.createUser(username, "test", username + "@test.de");
 
-        entityManager.persist(user);
+            // see that the ID of the user was set by Hibernate
+            System.out.println("user=" + user + ", user.id=" + user.getId());
 
-        entityManager.getTransaction().commit();
+            User foundUser = entityManager.find(User.class, user.getId());
 
-        // see that the ID of the user was set by Hibernate
-        System.out.println("user=" + user + ", user.id=" + user.getId());
+            // note that foundUser is the same instance as user and is a concrete
+            // class (not a JDX proxy)
+            System.out.println("foundUser=" + foundUser);
 
-        User foundUser = entityManager.find(User.class, user.getId());
-
-        System.out.println("foundUser=" + foundUser);
-
-        entityManager.close();
+            entityManager.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }
