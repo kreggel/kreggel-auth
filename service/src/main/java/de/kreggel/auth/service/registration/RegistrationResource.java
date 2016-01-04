@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
     public class RegistrationResource {
         @POST
         @Produces("application/json")
-        @Consumes("application/x-www-form-urlencoded")
+        @Consumes("application/json")
         public Response authenticateUser(Userdata userdata) {
             try {
                 UserService userService=new UserService();

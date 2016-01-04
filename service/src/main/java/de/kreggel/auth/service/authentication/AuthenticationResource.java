@@ -2,11 +2,9 @@ package de.kreggel.auth.service.authentication;
 
 import de.kreggel.auth.core.api.UserService;
 import de.kreggel.auth.core.persistence.jpa.entity.User;
+import org.glassfish.jersey.server.ContainerRequest;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -15,15 +13,26 @@ import java.util.List;
  */
 @Path("/authentication")
 public class AuthenticationResource {
-    @POST
+    @GET
     @Produces("application/json")
-    @Consumes("application/x-www-form-urlencoded")
-    public Response authenticateUser(Credentials credentials) {
+    public Response authenticateUser(ContainerRequest containerRequest) {
         try {
 
             // Authenticate the user using the credentials provided
-            String username = credentials.getUsername();
-            String password = credentials.getPassword();
+            // String username = credentials.getUsername();
+            // String password = credentials.getPassword();
+            //Get the authentification passed in HTTP headers parameters
+            String auth = containerRequest.getHeaderString("authorization");
+
+            //If the user does not have the right (does not provide any HTTP Basic Auth)
+            if(auth == null){
+                throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+            }
+
+            //lap : loginAndPassword
+            String[] credentials = BasicAuth.decode(auth);
+            String username=credentials[0];
+            String password=credentials[1];
             authenticate(username, password);
 
             // Issue a token for the user

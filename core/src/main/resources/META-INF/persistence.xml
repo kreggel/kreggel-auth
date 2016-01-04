@@ -8,7 +8,7 @@
     <persistence-unit name="kreggel-auth" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://192.168.0.21:5432/kreggel" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://192.168.99.101:5432/kreggel" />
             <property name="javax.persistence.jdbc.user" value="fns" />
             <property name="javax.persistence.jdbc.password" value="together" />
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
