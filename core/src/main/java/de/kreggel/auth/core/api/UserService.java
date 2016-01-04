@@ -4,6 +4,7 @@ import de.kreggel.auth.core.persistence.jpa.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import java.util.List;
 
 /**
  * Created by oliverklette on 1/2/16.
@@ -38,31 +39,25 @@ public class UserService {
         return user;
     }
 
-    public User findUser(String username) throws Exception {
+    public List<User> findUsers(String username) throws Exception {
 
         EntityManager entityManager = Persistence.createEntityManagerFactory("kreggel-auth").createEntityManager();
 
-        User foundUser = entityManager.createNamedQuery("User.findByName", User.class).setParameter("username", username).getSingleResult();
+        List<User> foundUsers = entityManager.createNamedQuery("User.findByName", User.class).setParameter("username", username).getResultList();
 
-        System.out.println(foundUser);
+        System.out.println(foundUsers);
 
         entityManager.close();
 
-        return foundUser;
+        return foundUsers;
     }
 
-    public void deletUser(String username) throws Exception {
-        try {
-            User user = this.findUser(username);
-
+    public void deletUser(User user) throws Exception {
             EntityManager entityManager = Persistence.createEntityManagerFactory("kreggel-auth").createEntityManager();
-
+            user=entityManager.find(User.class, user.getId());
             entityManager.getTransaction().begin();
             entityManager.remove(user);
             entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println("User " + username + " doesn't exist");
-        }
-
+            entityManager.close();
     }
 }
