@@ -2,8 +2,11 @@ package de.kreggel.auth.service.authentication;
 
 import de.kreggel.auth.core.api.UserService;
 import de.kreggel.auth.core.persistence.jpa.entity.User;
+import de.kreggel.auth.service.bootstrap.internal.AbstractResource;
 import org.glassfish.jersey.server.ContainerRequest;
 
+import javax.inject.Inject;
+import javax.json.Json;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -11,9 +14,13 @@ import java.util.List;
 /**
  * Created by oliverklette on 1/1/16.
  */
-@Path("/authentication")
-public class AuthenticationResource {
+@Path("/auth")
+public class AuthenticationResource extends AbstractResource {
+    @Inject
+    UserService userService;
+    Json token;
     @GET
+    @Path("basic")
     @Produces("application/json")
     public Response authenticateUser(ContainerRequest containerRequest) {
         try {
@@ -36,7 +43,7 @@ public class AuthenticationResource {
             authenticate(username, password);
 
             // Issue a token for the user
-            String token = issueToken(username);
+            issueToken(username);
 
             // Return the token on the response
             return Response.ok(token).build();
@@ -47,7 +54,6 @@ public class AuthenticationResource {
     }
 
     private void authenticate(String username, String password) throws Exception {
-        UserService userService=new UserService();
         List<User> userList=userService.findUsers(username);
         if (userList.size()!=1) {
             throw new Exception("Couldn't find the username");
@@ -65,9 +71,7 @@ public class AuthenticationResource {
         }
     }
 
-    private String issueToken(String username) {
+    private void issueToken(String username) {
         // TODO Issue a JWT token and return the issued token
-        String token="";
-        return token;
     }
 }
