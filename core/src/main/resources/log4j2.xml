@@ -7,7 +7,7 @@
 <Configuration status="WARN">
     <Appenders>
         <!-- Async Loggers will auto-flush in batches, so switch off immediateFlush. -->
-        <RandomAccessFile name="RandomAccessFile" fileName="kreggel-auth.log" immediateFlush="false" append="false">
+        <RandomAccessFile name="RandomAccessFile" fileName="${APP_HOME}logs/kreggel-auth.log" immediateFlush="false" append="false">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
             </PatternLayout>

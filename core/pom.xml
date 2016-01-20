@@ -58,7 +58,15 @@
                     <artifactId>spring-web</artifactId>
                     <groupId>org.springframework</groupId>
                 </exclusion>
-            </exclusions>
+				<exclusion>
+					<artifactId>jersey-bean-validation</artifactId>
+					<groupId>org.glassfish.jersey.ext</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>bean-validator</artifactId>
+					<groupId>org.glassfish.hk2.external</groupId>
+				</exclusion>
+			</exclusions>
         </dependency>
 
 		<!-- persistence -->
@@ -71,6 +79,11 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>

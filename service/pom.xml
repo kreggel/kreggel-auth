@@ -44,6 +44,11 @@
 			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
 			<artifactId>jersey-spring3</artifactId>
 			<version>${jersey.version}</version>
@@ -59,6 +64,14 @@
 				<exclusion>
 					<artifactId>spring-web</artifactId>
 					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+				<artifactId>jersey-bean-validation</artifactId>
+				<groupId>org.glassfish.jersey.ext</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>bean-validator</artifactId>
+					<groupId>org.glassfish.hk2.external</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -92,6 +105,11 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.json</groupId>
+			<artifactId>javax.json-api</artifactId>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 
@@ -163,6 +181,9 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
+				<configuration>
+					<port>8182</port>
+				</configuration>
 				<executions>
 					<execution>
 						<id>tomcat-run</id>
