@@ -7,7 +7,7 @@ import static de.kreggel.auth.service.bootstrap.internal.ErrorResponse.JSON_NAME
 @JsonRootName(JSON_NAME)
 public class ErrorResponse {
 
-    protected static final String JSON_NAME = "error";
+    protected static final String JSON_NAME = "ErrorResponse";
 
     private final String requestId;
     private final int code;

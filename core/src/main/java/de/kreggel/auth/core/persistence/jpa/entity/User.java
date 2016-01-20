@@ -13,10 +13,12 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(unique = true)
+    @Column(unique = true, name="UUID")
     private int id;
+    @Column(unique = true)
     private String username;
     private String password;
+    @Column(unique = true)
     private String email;
 
     public User(int id, String username, String password, String email) {

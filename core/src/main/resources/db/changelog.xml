@@ -16,7 +16,7 @@
 
     <changeSet author="OliverKlette85" context="new" id="20151229220700">
         <createTable tableName="user">
-            <column name="id" type="VARCHAR(255)">
+            <column name="uuid" type="INT">
                 <constraints nullable="false"/>
             </column>
             <column name="email" type="VARCHAR(255)">
@@ -30,11 +30,11 @@
     </changeSet>
 
     <changeSet author="OliverKlette85" context="new" id="20151229222000">
-        <addPrimaryKey columnNames="id" constraintName="user_pkey" tableName="user"/>
+        <addPrimaryKey columnNames="uuid" constraintName="user_pkey" tableName="user"/>
     </changeSet>
 
     <changeSet author="OliverKlette85" context="new" id="20151229222200">
-        <addUniqueConstraint columnNames="username, id, email" constraintName="user_unique" deferrable="false"
+        <addUniqueConstraint columnNames="username, email" constraintName="user_unique" deferrable="false"
                              disabled="false" initiallyDeferred="false" tableName="user"/>
     </changeSet>
 </databaseChangeLog>

@@ -25,7 +25,7 @@ public class ErrorCodeBasedExceptionMapper implements ExceptionMapper<ErrorCodeB
     public Response toResponse(ErrorCodeBasedException exception) {
         LOG.error(exception.getPhrase(), exception);
 
-        Status status = Status.INTERNAL_SERVER_ERROR;
+        Status status = Status.fromStatusCode(exception.getCode());
         int httpCode = status.getStatusCode();
         String phrase = status.getReasonPhrase();
 

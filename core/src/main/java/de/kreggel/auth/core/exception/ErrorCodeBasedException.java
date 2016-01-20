@@ -6,10 +6,14 @@ public class ErrorCodeBasedException extends Exception {
 
     public ErrorCodeBasedException(int code, String phrase) {
         super(code + " - " + phrase);
+        this.code=code;
+        this.phrase=phrase;
     }
 
     public ErrorCodeBasedException(int code, String phrase, Throwable throwable) {
         super(code + " - " + phrase, throwable);
+        this.code=code;
+        this.phrase=phrase;
     }
 
     public int getCode() {
